@@ -1,0 +1,46 @@
+// Place your settings in this file to overwrite default and user settings.
+{
+    // EDITOR SETTINGS
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/.DS_Store": true,
+        "**/__pycache__": true,
+        "**/env": true
+    },
+
+    // PYTHON SETTINGS
+    "python.pythonPath": "${workspaceRoot}/env/Scripts/python",
+
+    // PYLINT SETTINGS
+    "python.linting.pylintPath": "${workspaceRoot}/env/scripts/pylint",
+    "python.linting.pylintArgs": [
+        "--rcfile=${workspaceRoot}/.vscode/pylint.ini"
+    ],
+
+    // MYPY SETTINGS
+    "python.linting.mypyPath": "${workspaceRoot}/env/scripts/mypy.bat",
+    
+    // PEP8 SETTINGS
+    "python.linting.pep8Enabled": true,
+    "python.linting.pep8Path": "${workspaceRoot}/env/scripts/pep8",
+
+    // TODO EXTENSION SETTINGS
+    "todoIgnore": [
+        "**/env"
+    ],
+
+    // unit test settings
+    "python.unitTest.unittestArgs": [
+        "-v",
+        "-s ${workspaceRoot}",
+        "${workspaceRoot}/probot/tests",
+        "-p",
+        "*_test.py"
+    ],
+    "python.unitTest.unittestEnabled": false,
+    "python.unitTest.promptToConfigure": false,
+    "python.unitTest.pyTestEnabled": false,
+    "python.unitTest.nosetestsEnabled": false
+}
