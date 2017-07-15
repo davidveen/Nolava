@@ -1,0 +1,16 @@
+#   Message formatting:
+#
+#       *bold*      :   for bold text
+#       _italic_    :   for italics
+#       `code`      :   line of code
+#       ```block``` :   block of code
+
+<header>
+</header>
+
+<body>
+`There are too many players to start a game. Check the readylist for more information.`
+</body>
+
+<footer>
+</footer>

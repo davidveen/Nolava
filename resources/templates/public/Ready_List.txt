@@ -1,0 +1,22 @@
+#   Available variables:
+#
+#       %ready_list%  :   comma separated string of player names
+#
+#   Message formatting:
+#
+#       *bold*      :   for bold text
+#       _italic_    :   for italics
+#       `code`      :   line of code
+#       ```block``` :   block of code
+
+<header>
+</header>
+
+<body>
+The following players are eagerly waiting for the game to start:
+
+*%ready_list%*
+</body>
+
+<footer>
+</footer>

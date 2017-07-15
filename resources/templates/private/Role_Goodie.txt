@@ -1,0 +1,22 @@
+#   Available variables:
+#
+#       %known_players%     :   list of players that the player is aware of
+#
+#   Message formatting:
+#
+#       *bold*      :   for bold text
+#       _italic_    :   for italics
+#       `code`      :   line of code
+#       ```block``` :   block of code
+
+<header>
+`Welcome to Avalon! You are a _Loyal Servant of Arthur_!`
+</header>
+
+<body>
+You are not aware of any other identities. You know only one thing: you are one of the good guys! Who's with you?
+</body>
+
+<footer>
+Try not to cry.
+</footer>

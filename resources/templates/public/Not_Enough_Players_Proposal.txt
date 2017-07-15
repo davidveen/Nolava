@@ -1,0 +1,20 @@
+#   Available variables:
+#
+#		%expected_players%	:	number of expected players
+#
+#   Message formatting:
+#
+#       *bold*      :   for bold text
+#       _italic_    :   for italics
+#       `code`      :   line of code
+#       ```block``` :   block of code
+
+<header>
+</header>
+
+<body>
+`Not enough players to proceed. Expected number of players is *%expected_players%*.`
+</body>
+
+<footer>
+</footer>

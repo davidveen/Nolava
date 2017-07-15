@@ -1,0 +1,18 @@
+#   Message formatting:
+#
+#       *bold*      :   for bold text
+#       _italic_    :   for italics
+#       `code`      :   line of code
+#       ```block``` :   block of code
+
+<header>
+`This just won't fly.`
+</header>
+
+<body>
+Either you are not the assassin or you are too eager.
+Murdering people can wait until the end of the game.
+</body>
+
+<footer>
+</footer>

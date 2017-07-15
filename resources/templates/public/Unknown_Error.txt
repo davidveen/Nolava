@@ -1,0 +1,17 @@
+#   Message formatting:
+#
+#       *bold*      :   for bold text
+#       _italic_    :   for italics
+#       `code`      :   line of code
+#       ```block``` :   block of code
+
+<header>
+</header>
+
+<body>
+`Say what now what now?!`
+</body>
+
+<footer>
+An unknown error has occurred.
+</footer>

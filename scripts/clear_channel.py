@@ -1,0 +1,3 @@
+"""
+Spam be gone!
+"""

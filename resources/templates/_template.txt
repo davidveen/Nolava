@@ -1,0 +1,19 @@
+#   Available variables:
+#
+#       %variable%  :   description of variable
+#
+#   Message formatting:
+#
+#       *bold*      :   for bold text
+#       _italic_    :   for italics
+#       `code`      :   line of code
+#       ```block``` :   block of code
+
+<header>
+</header>
+
+<body>
+</body>
+
+<footer>
+</footer>

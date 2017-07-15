@@ -1,0 +1,22 @@
+#   Available variables:
+#
+#       %team%  :   the proposed team
+#
+#   Message formatting:
+#
+#       *bold*      :   for bold text
+#       _italic_    :   for italics
+#       `code`      :   line of code
+#       ```block``` :   block of code
+
+<header>
+`The mission starts`
+</header>
+
+<body>
+I have invited *%team%* to cast their vote in private.
+</body>
+
+<footer>
+Will the mission be a success?
+</footer>

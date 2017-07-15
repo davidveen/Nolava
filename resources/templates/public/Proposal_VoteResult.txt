@@ -1,0 +1,27 @@
+#   Available variables:
+#
+#       %result%	:	approved / disapproved
+#		%leader%	:	the current leader
+#		%team%		:	the proposed team
+#		%vote_results%	:	list of players with their votes and reasoning (if any)
+#		%opposed%	:	players who voted no on the proposed mission
+#
+#   Message formatting:
+#
+#       *bold*      :   for bold text
+#       _italic_    :   for italics
+#       `code`      :   line of code
+#       ```block``` :   block of code
+
+<header>
+All proposal votes are in.
+</header>
+
+<body>
+To wit, *%leader%* proposed *%team%* to go on mission.
+The team has been *%result%*.
+</body>
+
+<footer>
+%vote_results%
+</footer>

@@ -1,0 +1,22 @@
+#   Available variables:
+#
+#		%winner%	:	the winning force
+#
+#   Message formatting:
+#
+#       *bold*      :   for bold text
+#       _italic_    :   for italics
+#       `code`      :   line of code
+#       ```block``` :   block of code
+
+<header>
+`The battle for Avalon has concluded.`
+</header>
+
+<body>
+The *%winner%* have won.
+</body>
+
+<footer>
+Play again?
+</footer>

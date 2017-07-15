@@ -1,0 +1,18 @@
+#   Available variables:
+#
+#   Message formatting:
+#
+#       *bold*      :   for bold text
+#       _italic_    :   for italics
+#       `code`      :   line of code
+#       ```block``` :   block of code
+
+<header>
+</header>
+
+<body>
+Bye-bye!
+</body>
+
+<footer>
+</footer>

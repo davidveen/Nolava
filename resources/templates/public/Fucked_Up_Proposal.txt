@@ -1,0 +1,18 @@
+#   Message formatting:
+#
+#       *bold*      :   for bold text
+#       _italic_    :   for italics
+#       `code`      :   line of code
+#       ```block``` :   block of code
+
+<header>
+`Computer says 'No'.`
+</header>
+
+<body>
+The proposal couldn't be parsed. Maybe you've misspelled a name? Maybe you're imagining people?
+</body>
+
+<footer>
+If the problem persists, see a doctor.
+</footer>

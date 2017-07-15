@@ -1,0 +1,18 @@
+#   Message formatting:
+#
+#       *bold*      :   for bold text
+#       _italic_    :   for italics
+#       `code`      :   line of code
+#       ```block``` :   block of code
+
+<header>
+`This is not a valid vote, you silly monkey.`
+</header>
+
+<body>
+Try !yes or !no for proposals, or !success and !fail for missions.
+You cannot vote !fail if you are loyal to Arthur.
+</body>
+
+<footer>
+</footer>

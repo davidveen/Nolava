@@ -1,0 +1,18 @@
+#   Message formatting:
+#
+#       *bold*      :   for bold text
+#       _italic_    :   for italics
+#       `code`      :   line of code
+#       ```block``` :   block of code
+
+<header>
+`This just won't fly.`
+</header>
+
+<body>
+The person you're trying to murder doesn't exist.
+</body>
+
+<footer>
+I'm not programmed to lie.
+</footer>

@@ -1,0 +1,22 @@
+#   Available variables:
+#
+#       %known_players%     :   list of players that the player is aware of
+#
+#   Message formatting:
+#
+#       *bold*      :   for bold text
+#       _italic_    :   for italics
+#       `code`      :   line of code
+#       ```block``` :   block of code
+
+<header>
+`Welcome to Avalon! You are _Morgana_, a loyal minion of Mordred! Using your magic powers, you are able to confuse Percival. Percival knows both you and Merlin, but does not know which of you is his magical friend.`
+</header>
+
+<body>
+You know the identities of the following fellow minions: %known_players%
+</body>
+
+<footer>
+Merlin is aware of your evil intentions, but does not know you are Morgana.
+</footer>

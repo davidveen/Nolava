@@ -1,0 +1,20 @@
+#   Available variables:
+#
+#       %player_name%  :   name of the player who joined
+#
+#   Message formatting:
+#
+#       *bold*      :   for bold text
+#       _italic_    :   for italics
+#       `code`      :   line of code
+#       ```block``` :   block of code
+
+<header>
+</header>
+
+<body>
+Player "%player_name%" wants to play, apparently.
+</body>
+
+<footer>
+</footer>

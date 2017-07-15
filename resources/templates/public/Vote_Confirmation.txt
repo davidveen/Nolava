@@ -1,0 +1,20 @@
+#   Available variables:
+#
+#       %player%  :   name of the player who has voted
+#
+#   Message formatting:
+#
+#       *bold*      :   for bold text
+#       _italic_    :   for italics
+#       `code`      :   line of code
+#       ```block``` :   block of code
+
+<header>
+</header>
+
+<body>
+*%player%* cast a vote.
+</body>
+
+<footer>
+</footer>

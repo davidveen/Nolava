@@ -1,0 +1,19 @@
+#   Message formatting:
+#
+#       *bold*      :   for bold text
+#       _italic_    :   for italics
+#       `code`      :   line of code
+#       ```block``` :   block of code
+
+<header>
+</header>
+
+<body>
+Why are you voting? You're not supposed to vote. Stop voting. Leave me alone.
+
+Seriously.
+</body>
+
+<footer>
+Just.. don't.
+</footer>

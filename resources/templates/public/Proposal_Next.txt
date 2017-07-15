@@ -1,0 +1,28 @@
+#   Available variables:
+#
+#       %leader%				:   name of the current leader
+#		%players%				:   list of players
+#		%mission_number%		:   mission number
+#		%num_players_required%  :   number of players needed on mission
+#		%proposal_number%		:	proposal count in mission
+#
+#   Message formatting:
+#
+#       *bold*      :   for bold text
+#       _italic_    :   for italics
+#       `code`      :   line of code
+#       ```block``` :   block of code
+
+<header>
+`Let's try this proposal thing again.`
+</header>
+
+<body>
+The current leader is *%leader%*
+The player order is *%players%*.
+The current mission is still number %mission_number%, and this will be proposal number %proposal_number%.
+</body>
+
+<footer>
+*%leader%*, you may enlist *%num_players_required%* party members to join you. Choose wisely.
+</footer>

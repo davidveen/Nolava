@@ -1,0 +1,24 @@
+#   Available variables:
+#
+#       %variable%  :   description of variable
+#
+#   Message formatting:
+#
+#       *bold*      :   for bold text
+#       _italic_    :   for italics
+#       `code`      :   line of code
+#       ```block``` :   block of code
+
+<header>
+`You are on a mission!`
+</header>
+
+<body>
+Do you sabotage the mission?
+Decide: !success or !fail.
+</body>
+
+<footer>
+Voting !fail if you are loyal to Arthur will make me yell at you.
+I dare you.
+</footer>

@@ -1,0 +1,22 @@
+#   Available variables:
+#
+#       %known_players%     :   list of players that the player is aware of
+#
+#   Message formatting:
+#
+#       *bold*      :   for bold text
+#       _italic_    :   for italics
+#       `code`      :   line of code
+#       ```block``` :   block of code
+
+<header>
+`Welcome to Avalon! You are _Oberon_, a loyal minion of Mordred!`
+</header>
+
+<body>
+You do not know the identity of any of your fellow minions, nor are they aware of your evil nature.
+</body>
+
+<footer>
+Merlin knows you are up to no good, but he does not know you are Oberon.
+</footer>

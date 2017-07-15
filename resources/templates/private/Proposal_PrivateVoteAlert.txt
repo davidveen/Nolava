@@ -1,0 +1,23 @@
+#   Available variables:
+#
+#       %leader%	:   the current leader
+#		%team%		:	the proposed team
+#
+#   Message formatting:
+#
+#       *bold*      :   for bold text
+#       _italic_    :   for italics
+#       `code`      :   line of code
+#       ```block``` :   block of code
+
+<header>
+`A mission has been proposed!`
+</header>
+
+<body>
+*%leader%* has proposed *%team%* to go and protect the kingdom.
+</body>
+
+<footer>
+What say you? Cast your vote: !yes or !no.
+</footer>

@@ -1,0 +1,22 @@
+#   Available variables:
+#
+#       %variable%  :   description of variable
+#
+#   Message formatting:
+#
+#       *bold*      :   for bold text
+#       _italic_    :   for italics
+#       `code`      :   line of code
+#       ```block``` :   block of code
+
+<header>
+`Merlin must die!`
+</header>
+
+<body>
+The servants of King Arthur have won, but you can still win the battle for Avalon by murdering Merlin.
+</body>
+
+<footer>
+Choose who you will assassinate.
+</footer>

@@ -1,0 +1,18 @@
+#   Message formatting:
+#
+#       *bold*      :   for bold text
+#       _italic_    :   for italics
+#       `code`      :   line of code
+#       ```block``` :   block of code
+
+<header>
+`The assassin is about to strike!`
+</header>
+
+<body>
+The assassin contemplates Merlin's identity and will make his move soon.
+</body>
+
+<footer>
+The minions of Mordred are allowed to make known their suggestions.
+</footer>

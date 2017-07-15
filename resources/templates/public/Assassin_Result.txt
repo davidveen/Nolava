@@ -1,0 +1,24 @@
+#   Available variables:
+#
+#		%assassin%		:	the assassin
+#		%victim%		:	the player who was assassinated
+#		%is_merlin%		:	not, indeed
+#
+#   Message formatting:
+#
+#       *bold*      :   for bold text
+#       _italic_    :   for italics
+#       `code`      :   line of code
+#       ```block``` :   block of code
+
+<header>
+`The assassin has struck!`
+</header>
+
+<body>
+The assassin, *%assassin%*, assassinated *%victim%*.
+</body>
+
+<footer>
+This was *%is_merlin%* Merlin!
+</footer>

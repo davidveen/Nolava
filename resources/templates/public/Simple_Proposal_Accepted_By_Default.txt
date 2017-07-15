@@ -1,0 +1,23 @@
+#   Available variables:
+#
+#       %leader%        :   name of the current leader
+#		%players%       :   list of players
+#		%mission%       :   mission number
+#		%num_players%   :   number of players needed on mission
+#
+#   Message formatting:
+#
+#       *bold*      :   for bold text
+#       _italic_    :   for italics
+#       `code`      :   line of code
+#       ```block``` :   block of code
+
+<header>
+</header>
+
+<body>
+The proposal was accepted by default. Democracy is dead.
+</body>
+
+<footer>
+</footer>

@@ -1,0 +1,16 @@
+#   Message formatting:
+#
+#       *bold*      :   for bold text
+#       _italic_    :   for italics
+#       `code`      :   line of code
+#       ```block``` :   block of code
+
+<header>
+</header>
+
+<body>
+`Someone voted without permission. I have not registered the vote.`
+</body>
+
+<footer>
+</footer>

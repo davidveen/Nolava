@@ -1,0 +1,25 @@
+#   Available variables:
+#
+#       %known_players%     :   list of players that the player is aware of
+#
+#   Message formatting:
+#
+#       *bold*      :   for bold text
+#       _italic_    :   for italics
+#       `code`      :   line of code
+#       ```block``` :   block of code
+
+<header>
+`Welcome to Avalon! You are the venerable _Merlin_ himself!`
+</header>
+
+<body>
+You are aware of the identities of all enemies save for Mordred himself: *%known_players%*
+</body>
+
+<footer>
+Your knowledge makes you powerful - use it to save the loyal servants of Arthur!
+Be aware that you need to keep your identity secret. If the Assassin learns your true identity, evil will ultimately prevail.
+(6 players or more): Your loyal knight Percival knows of your identity and will try to protect you at all costs.
+(10 players): The evil witch Morgana has confused Percival by posing as Merlin herself. Blasphemy!
+</footer>

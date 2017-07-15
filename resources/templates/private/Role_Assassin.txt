@@ -1,0 +1,22 @@
+#   Available variables:
+#
+#       %known_players%     :   list of players that the player is aware of
+#
+#   Message formatting:
+#
+#       *bold*      :   for bold text
+#       _italic_    :   for italics
+#       `code`      :   line of code
+#       ```block``` :   block of code
+
+<header>
+`Welcome to Avalon! You are the _Assassin_, a loyal minion of Mordred!`
+</header>
+
+<body>
+You know the identities of the following minions of Mordred: *%known_players%*
+</body>
+
+<footer>
+At the end of the game, should the servants of Arthur prove victorious, you have one last chance of attaining victory by assassinating Merlin. So remain vigilant, and see if you can uncover him!
+</footer>

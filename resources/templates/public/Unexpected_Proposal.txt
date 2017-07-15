@@ -1,0 +1,17 @@
+#   Message formatting:
+#
+#       *bold*      :   for bold text
+#       _italic_    :   for italics
+#       `code`      :   line of code
+#       ```block``` :   block of code
+
+<header>
+</header>
+
+<body>
+`I have rejected a proposal, because it was put forth by someone who is not the leader.`
+</body>
+
+<footer>
+Fulfill your destiny. Become the leader. Or await your turn, you bastard.
+</footer>

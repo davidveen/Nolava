@@ -1,0 +1,17 @@
+#   Message formatting:
+#
+#       *bold*      :   for bold text
+#       _italic_    :   for italics
+#       `code`      :   line of code
+#       ```block``` :   block of code
+
+<header>
+`Not enough players to start a game.`
+</header>
+
+<body>
+A minimum of 5 players is required. Check the readylist for more information.
+</body>
+
+<footer>
+</footer>

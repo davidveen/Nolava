@@ -1,0 +1,23 @@
+#   Available variables:
+#
+#       %players%   :   list of participating players, in correct leader order
+#       %leader%    :   current round leader
+#
+#   Message formatting:
+#
+#       *bold*      :   for bold text
+#       _italic_    :   for italics
+#       `code`      :   line of code
+#       ```block``` :   block of code
+
+<header>
+Resuming the current game of Avalon!
+</header>
+
+<body>
+The leader order is: %players%.
+</body>
+
+<footer>
+The current leader is *%leader%*!
+</footer>

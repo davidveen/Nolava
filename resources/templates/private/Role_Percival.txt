@@ -1,0 +1,24 @@
+#   Available variables:
+#
+#       %known_players%     :   list of players that the player is aware of
+#
+#   Message formatting:
+#
+#       *bold*      :   for bold text
+#       _italic_    :   for italics
+#       `code`      :   line of code
+#       ```block``` :   block of code
+
+<header>
+`Welcome to Avalon! You are _Percival_!`
+</header>
+
+<body>
+You know the true identity of Merlin: *%known_players%*
+</body>
+
+<footer>
+You are the most loyal knight of them all. Listen well to Merlin, for he has knowledge of the enemy.
+The evil Assassin will try to kill Merlin. Save him! Save the Kingdom!
+(10 players): Morgana is trying to confuse you by posing as Merlin. Which Merlin is your true saviour?
+</footer>

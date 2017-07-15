@@ -1,0 +1,23 @@
+#   Available variables:
+#
+#       %team%		:   the proposed team
+#		%result%	:	string with specific results
+#
+#   Message formatting:
+#
+#       *bold*      :   for bold text
+#       _italic_    :   for italics
+#       `code`      :   line of code
+#       ```block``` :   block of code
+
+<header>
+`The mission votes have been cast!`
+</header>
+
+<body>
+*%team%* have returned.
+</body>
+
+<footer>
+The mission *%result%*.
+</footer>

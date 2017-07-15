@@ -1,0 +1,22 @@
+#   Available variables:
+#
+#       %known_players%     :   list of players that the player is aware of
+#
+#   Message formatting:
+#
+#       *bold*      :   for bold text
+#       _italic_    :   for italics
+#       `code`      :   line of code
+#       ```block``` :   block of code
+
+<header>
+`Welcome to Avalon! You are _Mordred_ himself!`
+</header>
+
+<body>
+You know the identities of these loyal minions of yours: *%known_players%*
+</body>
+
+<footer>
+Merlin is unaware of your identity - make good use of this advantage to sow suspicion amongst the ranks of the loyal servants of Arthur!
+</footer>
