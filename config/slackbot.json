@@ -1,0 +1,8 @@
+{
+    "name": "deepthought",
+    "slackId": "U0FLUHNUS",
+    "channel": "nolava",
+    "token": "xoxb-15708600978-wOKGJZC8V0SkVnLZcWQdQaNl",
+    "clientId": "slackDev",
+    "debug": 1
+}
