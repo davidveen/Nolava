@@ -8,28 +8,13 @@ from typing import List, NamedTuple
 
 import slacker
 
+from .common.model import SlackChannel, SlackMessage, SlackUser
+
+
 with open("config/slackbot.json", "r") as config:
     _CONFIG = json.load(config)
 
 _SLACK = slacker.Slacker(_CONFIG["token"])
-
-
-SlackMessage = NamedTuple(
-    "SlackMessage",
-    [("user_id", str), ("timestmap", str), ("text", str)]
-)
-
-
-SlackUser = NamedTuple(
-    "SlackUser",
-    [("name", str), ("id", str)]
-)
-
-
-SlackChannel = NamedTuple(
-    "SlackChannel",
-    [("name", str), ("id", str), ("users", List[SlackUser])]
-)
 
 
 def message(target: str, text: str) -> None:
