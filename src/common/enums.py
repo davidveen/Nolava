@@ -2,7 +2,7 @@
 from enum import IntEnum
 
 
-class Messages(IntEnum):
+class MessageType(IntEnum):
 
     # Game message
     GAME_START = 100
