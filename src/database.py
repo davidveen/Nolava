@@ -6,15 +6,54 @@ import datetime
 import json
 import pymysql
 
+from common.enums import GameState
+
 CONFIG_FILE = "config/db.json"
 
 
-def get_game_id(client_id: int):
-    """
-    Retrieve active game ID from client.
-    """
+def get_player_availability(client_id: int, player_id: int):
+    pass
 
 
+def set_player_availability(client_id: int, player_id: int, value: bool):
+    pass
+
+
+def set_game_state(game_id: int, target_state: GameState):
+    pass
+
+
+def register_proposal(game_id: int):
+    pass
+
+
+def _get_game(client_id: int):
+    # get active game
+    pass
+
+
+def _get_mission(game_id):
+    # get active mission
+    pass
+
+
+def _get_proposal(mission_id):
+    # get active proposal
+    pass
+
+
+def _get_players(game_id):
+    pass
+
+
+def _get_leader(game_id):
+    # get active leader
+    pass
+
+
+def _get_assassin(game_id):
+    # get assassin player id
+    pass
 
 
 class BaseAccessor(object):
