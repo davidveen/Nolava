@@ -8,12 +8,21 @@ import pymysql
 
 CONFIG_FILE = "config/db.json"
 
+
+def get_game_id(client_id: int):
+    """
+    Retrieve active game ID from client.
+    """
+
+
+
+
 class BaseAccessor(object):
     """ Base database accessor (MYSQL). """
     def __init__(self):
         with open(CONFIG_FILE) as config:
             self._settings = json.load(config)
-    
+
     def _query(self, query, *args, model=None):
         cursor = self._get_cursor()
         arguments = self._stringify(args)
