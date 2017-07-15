@@ -2,4 +2,53 @@
 Tuples for stuffs to do with as you please.
 """
 
-# from collections import name
+from enum import IntEnum
+
+
+class Messages(IntEnum):
+    # Game message
+    GAME_START = 100
+    GAME_RESUME = 101  # template not made, no back-end implementation
+    PLAYER_JOIN = 110
+    PLAYER_LEAVE = 111
+    READY_LIST = 120
+    GAME_END = 199
+
+    # GameState message
+    GAME_STATUS = 200  # template not made, no back-end implementation
+    ROUND_START = 201
+    PROPOSAL_VOTE_START = 210
+    PROPOSAL_NEXT = 211
+    PROPOSAL_ACCEPTED_BY_DEFAULT = 218
+    PROPOSAL_VOTE_RESULT = 219
+    MISSION_VOTE_START = 220
+    MISSION_VOTE_RESULT = 229
+    ASSASSIN_ALERT = 230
+    ASSASSIN_RESULT = 231
+    PRIVATE_VOTE_CONFIRMATION = 240
+    PUBLIC_VOTE_CONFIRMATION = 241
+
+    # Private message
+    ROLE_MESSAGE = 300
+    PROPOSAL_VOTE_ALERT = 301
+    MISSION_VOTE_ALERT = 302
+    ASSASSIN_PRIVATE_ALERT = 303
+
+    # Error
+    UNKNOWN_ERROR = 900
+    GAME_LOAD_FAIL = 901
+    GAME_START_FAIL = 902
+
+    GAME_IN_PROGRESS = 910
+    NOT_ENOUGH_PLAYERS = 911
+    TOO_MANY_PLAYERS = 912
+
+    UNEXPECTED_VOTE = 920
+    FUCKED_UP_VOTE = 921
+    FUCKED_UP_PROPOSAL = 922
+    FUCKED_UP_MURDER = 923
+    UNEXPECTED_MURDER = 923
+
+    NOT_ENOUGH_PLAYERS_PROPOSAL = 930
+    TOO_MANY_PLAYERS_PROPOSAL = 931
+    UNEXPECTED_PROPOSAL = 932
