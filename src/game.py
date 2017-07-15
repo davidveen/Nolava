@@ -28,7 +28,8 @@ def start_game(client_id: int):
         """
         pass
 
-    pass
+    # if no game is active,
+    # an appropriate number of players should be available
 
 
 def abort_game(client_id: int):
