@@ -1,11 +1,9 @@
-"""
-Tuples for stuffs to do with as you please.
-"""
 
 from enum import IntEnum
 
 
 class Messages(IntEnum):
+
     # Game message
     GAME_START = 100
     GAME_RESUME = 101  # template not made, no back-end implementation
@@ -52,3 +50,27 @@ class Messages(IntEnum):
     NOT_ENOUGH_PLAYERS_PROPOSAL = 930
     TOO_MANY_PLAYERS_PROPOSAL = 931
     UNEXPECTED_PROPOSAL = 932
+
+
+class GameState(IntEnum):
+    RECRUITING = 1
+    TEAM_PROPOSAL = 2
+    TEAM_VOTE = 3
+    MISSION_VOTE = 4
+    ASSASSINATION = 5
+    CONCLUDED = 6
+    ABORTED = 99
+
+
+class MissionStatus(IntEnum):
+    PROPOSING = 1
+    VOTING_TEAM = 2
+    VOTING_MISSION = 3
+    CONCLUDED = 9
+    ABORTED = 99
+
+
+class ProposalStatus(IntEnum):
+    OPEN = 1
+    CLOSED = 2
+    ABORTED = 99
