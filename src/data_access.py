@@ -13,41 +13,42 @@ _DB_JSON = ("config/db_debug.json", "config/db.json")
 CONFIG_FILE = _DB_JSON[0] if os.path.exists(_DB_JSON[0]) else _DB_JSON[1]
 
 
-class BaseAccessor(object):
-    """ Base database accessor (MYSQL). """
-    def __init__(self):
-        with open(CONFIG_FILE) as config:
-            self._settings = json.load(config)
+def _settings():
+    with open(CONFIG_FILE) as config:
+        return json.load(config)
 
-    def query(self, query, *args, model=None):
-        cursor = self._get_cursor()
-        arguments = self._stringify(args)
-        result = cursor.execute(query, arguments)
+
+def query(query_, *args, model=None):
+    with _get_cursor() as cursor:
+        arguments = _stringify(args)
+        cursor.execute(query_, arguments)
 
         if model:
             return [model(**row) for row in cursor if row]
         else:
-            return cursor
+            return cursor.fetchall()
 
-    def _stringify(self, args):
-        arguments = []
 
-        for arg in args:
-            if isinstance(arg, datetime.datetime):
-                arguments.append(arg.strftime('%Y-%m-%d %H:%M:%S'))
-            else:
-                arguments.append(str(arg))
+def _stringify(args):
+    arguments = []
 
-        return tuple(arguments)
+    for arg in args:
+        if isinstance(arg, datetime.datetime):
+            arguments.append(arg.strftime('%Y-%m-%d %H:%M:%S'))
+        else:
+            arguments.append(str(arg))
 
-    def _get_cursor(self):
-        connection = pymysql.connect(
-            host=self._settings.get("host", None),
-            port=self._settings.get("port", None),
-            user=self._settings.get("user", None),
-            passwd=self._settings.get("password", None),
-            db=self._settings.get("database", None),
-            autocommit=True
-        )
+    return tuple(arguments)
 
-        return connection.cursor(pymysql.cursors.DictCursor)
+
+def _get_cursor():
+    connection = pymysql.connect(
+        host=_settings().get("host", None),
+        port=_settings().get("port", None),
+        user=_settings().get("user", None),
+        passwd=_settings().get("password", None),
+        db=_settings().get("database", None),
+        autocommit=True
+    )
+
+    return connection.cursor(pymysql.cursors.DictCursor)
