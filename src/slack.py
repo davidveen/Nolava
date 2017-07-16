@@ -17,7 +17,7 @@ with open("config/slackbot.json", "r") as config:
 _SLACK = slacker.Slacker(_CONFIG["token"])
 
 
-def message(target: str, text: str) -> None:
+def post_message(target: str, text: str) -> None:
     """
     Post a message to target (either a Slack User ID or channel name) as
     deepthought.
@@ -25,10 +25,18 @@ def message(target: str, text: str) -> None:
     _SLACK.chat.post_message(target, text, as_user=True)
 
 
+def delete_message(message: SlackMessage) -> None:
+    """
+    Delete message in the target channel that was posted at the given
+    timestamp.
+    """
+    _SLACK.chat.delete(message.channel.id, message.timestamp)
+
+
 def chat_history(
-    source_id: str,
+    channel: SlackChannel,
     private: bool=False,
-    timestamp: float=0.0
+    timestamp: float=None
 ) -> List[SlackMessage]:
     """
     Get chat history of either target channel or user (IM).
@@ -37,15 +45,17 @@ def chat_history(
     retrieved.
     """
     get_history = _SLACK.im.history if private else _SLACK.channels.history
-    history = get_history(source_id, oldest=timestamp).body["messages"]
+    history = get_history(channel.id, oldest=timestamp).body["messages"]
 
     return [
         SlackMessage(
-            user_id=msg["user"],
+            channel=channel,
+            user=user_by_id(msg["user"]),
             timestamp=msg["ts"],
             text=msg["text"]
         )
         for msg in history
+        if msg.get("user", False)
     ]
 
 
@@ -59,6 +69,27 @@ def user_by_id(user_id: str) -> SlackUser:
         id=user["id"],
         name=user["name"]
     )
+
+
+def user_by_name(user_name: str) -> SlackUser:
+    """
+    Find a Slack user by name.
+    """
+    all_users = _SLACK.users.list().body["members"]
+
+    try:
+        user, *_ = [
+            u for u in all_users
+            if u["name"].casefold() == user_name.casefold()
+        ]
+
+        return SlackUser(
+            id=user["id"],
+            name=user["name"]
+        )
+
+    except ValueError:
+        raise slacker.Error(f"Could not find user \"{user_name}\".")
 
 
 def channel_by_name(name: str) -> SlackChannel:
