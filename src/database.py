@@ -6,54 +6,91 @@ import datetime
 import json
 import pymysql
 
-from common.enums import GameState
+from .common.enums import GameState
 
 CONFIG_FILE = "config/db.json"
 
 
-def get_player_availability(client_id: int, player_id: int):
-    pass
+def toggle_player_availability(
+    client_id: int,
+    player_id: int,
+) -> bool:
+    def _get_player_availability() -> bool:
+        raise NotImplementedError
+
+    is_available = _get_player_availability()
+    raise NotImplementedError
 
 
-def set_player_availability(client_id: int, player_id: int, value: bool):
-    pass
+def get_available_players(client_id: int):
+    raise NotImplementedError
 
 
 def set_game_state(game_id: int, target_state: GameState):
-    pass
+    raise NotImplementedError
 
 
 def register_proposal(game_id: int):
-    pass
+    raise NotImplementedError
 
 
-def _get_game(client_id: int):
+def register_team_vote(
+    game_id: int,
+    player_id: int,
+    vote: bool,
+    message: str
+) -> bool:
+    """
+    Register team vote
+    Return False if player already voted.
+    """
+    raise NotImplementedError
+
+
+def register_mission_vote(
+    game_id: int,
+    player_id: int,
+    vote: bool
+) -> bool:
+    """
+    Register team vote
+    Return False if player already voted.
+    """
+    raise NotImplementedError
+
+
+def get_player_by_name(game_id: int, player_name: str):
+    raise NotImplementedError
+
+
+def get_game(client_id: int) -> bool:
     # get active game
-    pass
+    # return False if no active game on client
+    raise NotImplementedError
 
 
 def _get_mission(game_id):
     # get active mission
-    pass
+    raise NotImplementedError
 
 
 def _get_proposal(mission_id):
     # get active proposal
-    pass
+    raise NotImplementedError
 
 
 def _get_players(game_id):
-    pass
+    raise NotImplementedError
 
 
 def _get_leader(game_id):
     # get active leader
-    pass
+    raise NotImplementedError
 
 
 def _get_assassin(game_id):
     # get assassin player id
-    pass
+    raise NotImplementedError
 
 
 class BaseAccessor(object):
@@ -88,7 +125,7 @@ class BaseAccessor(object):
             host=self._settings.get("host", None),
             port=self._settings.get("port", None),
             user=self._settings.get("user", None),
-            passwd=self._settings.get("password", None),
+            passwd=self._settings.get("passwd", None),
             db=self._settings.get("database", None),
             autocommit=True
         )
