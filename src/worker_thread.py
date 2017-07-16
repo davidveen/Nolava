@@ -19,23 +19,30 @@ class WorkerThread(threading.Thread):
     def run(self):
         pass
 
-    def post_message(self) -> None:
+    def _main(self):
+        msg = self._get_message()
+        if msg:
+            message_id, message, recipient_id = msg
+            self._post_message(message, recipient_id)
+            self._mark_message_posted(message_id)
+
+    def _post_message(self, message: str, recipient_id: str) -> None:
         """
         Post message to slack
         """
-        pass
+        slack.post_message(recipient_id, message)
 
-    def mark_message_posted(self):
+    def _mark_message_posted(self, message_id: int) -> None:
         """
         Mark message as posted.
         """
         pass
 
-    def get_message(self) -> typing.Optional[typing.Tuple[str, str]]:
+    def _get_message(self) -> typing.Optional[typing.Tuple[int, str, str]]:
         """
         Get the next message from queue.
 
-        Returns message and recipient. Returns `None` when no messages are
-        available.
+        Returns message-id, message and recipient. Returns `None` when no
+        messages are available.
         """
         pass

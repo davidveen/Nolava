@@ -5,10 +5,12 @@ Everything to do with data
 import datetime
 import json
 import pymysql
+import os
 
 from .common.enums import GameState
 
-CONFIG_FILE = "config/db.json"
+_DB_JSON = ("config/db_debug.json", "config/db.json")
+CONFIG_FILE = _DB_JSON[0] if os.path.exists(_DB_JSON[0]) else _DB_JSON[1]
 
 
 def toggle_player_availability(
@@ -69,6 +71,14 @@ def get_game(client_id: int) -> bool:
     raise NotImplementedError
 
 
+def get_next_message():
+    db = BaseAccessor()
+
+
+def mark_message_posted(message_id):
+    pass
+
+
 def _get_mission(game_id):
     # get active mission
     raise NotImplementedError
@@ -91,43 +101,3 @@ def _get_leader(game_id):
 def _get_assassin(game_id):
     # get assassin player id
     raise NotImplementedError
-
-
-class BaseAccessor(object):
-    """ Base database accessor (MYSQL). """
-    def __init__(self):
-        with open(CONFIG_FILE) as config:
-            self._settings = json.load(config)
-
-    def _query(self, query, *args, model=None):
-        cursor = self._get_cursor()
-        arguments = self._stringify(args)
-        result = cursor.execute(query, arguments)
-
-        if model:
-            return [model(**row) for row in cursor if row]
-        else:
-            return bool(result)
-
-    def _stringify(self, args):
-        arguments = []
-
-        for arg in args:
-            if isinstance(arg, datetime.datetime):
-                arguments.append(arg.strftime('%Y-%m-%d %H:%M:%S'))
-            else:
-                arguments.append(str(arg))
-
-        return tuple(arguments)
-
-    def _get_cursor(self):
-        connection = pymysql.connect(
-            host=self._settings.get("host", None),
-            port=self._settings.get("port", None),
-            user=self._settings.get("user", None),
-            passwd=self._settings.get("passwd", None),
-            db=self._settings.get("database", None),
-            autocommit=True
-        )
-
-        return connection.cursor(pymysql.cursors.DictCursor)

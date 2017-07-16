@@ -105,3 +105,4 @@ ENV/
 
 **/main_debug.py
 main.py
+config/db_debug.json
