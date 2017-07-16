@@ -2,7 +2,9 @@
 Monolith first. Services rofl.
 """
 
-from common.enums import GameState
+import src.database as db
+from .message import post_message
+from .common.enums import MessageType, GameState
 
 _MIN_PLAYERS = 5
 _MAX_PLAYERS = 10
@@ -13,23 +15,38 @@ def toggle_available(client_id: int, player_id: int):
     Declare player available or unavailable for next game
     based on previously known setting
     """
-    pass
+    db.toggle_player_availability(client_id, player_id)
+    return 'foo'
 
 
 def start_game(client_id: int):
     """
     Start a game for a client.
-    If a game is already active, returns active game id.
-    If no game was active, a new game is created and the id returned.
+    If no game was active, a new game is created.
+    If a game was active, nothing happens.
+
+    Posts:
+        - GAME_IN_PROGRESS
+        OR
+        - GAME_START
+        OR
+        - NOT_ENOUGH_PLAYERS
+        - TOO_MANY_PLAYERS
     """
     def _check_num_players_available():
         """
         Make sure a Goldilocks number of players are registered
         """
-        pass
+        return (
+            _MIN_PLAYERS <
+            len(db.get_available_players(client_id)) <
+            _MAX_PLAYERS
+        )
 
+    is_active = (db.get_game(client_id) is not None)
     # if no game is active,
     # an appropriate number of players should be available
+    game_id = db.get_game
 
 
 def abort_game(client_id: int):
@@ -112,5 +129,3 @@ def _check_mission_vote_complete(game_id: int):
     pass
 
 
-def _get_player_by_name(player_name: str):
-    pass
