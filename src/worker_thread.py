@@ -4,6 +4,7 @@ actions.
 """
 import threading
 import typing
+import slacker
 
 import src.data_access as db
 import src.slack as slack
@@ -36,26 +37,32 @@ class WorkerThread(threading.Thread):
         # Start as daemonic so this thread will not prevent Python from
         # closing
         super().__init__(daemon=True)
+        self._continue = True
         self.start()
 
     def run(self):
-        while self._main():
-            pass
+        while self._continue:
+            self._main()
 
-    def _main(self) -> bool:
+    def stop(self):
+        # TODO Is this the way we want to do this?
+        self._continue = False
+
+    def _main(self) -> None:
         for msg in self._get_message():
             message_id, recipient_id, message = msg.values()
-            self._post_message(message, recipient_id)
-            self._mark_message_posted(message_id)
-            # NOTE TODO Please create a quit-message to nicely terminate this
-            #           thread.
-            # if message == message_quit:
-                # return False
-        return True
+            try:
+                self._post_message(message, recipient_id)
+                self._mark_message_posted(message_id)
+            except slacker.Error:
+                # TODO log posting message failed
+                # post_to_super_user()
+                # log()
+                pass
 
     def _post_message(self, message: str, recipient_id: str) -> None:
         """
-        Post message to slack
+        Post message to slack.
         """
         slack.post_message(recipient_id, message)
 
@@ -77,6 +84,7 @@ class WorkerThread(threading.Thread):
             yield message
 
     def _create_test_queue(self, user):
+        # Only used to get some test messages in the queue. May be removed
         db.query(
             "INSERT INTO MessageQueue (recipient_id, payload, processed) "
             f"VALUES ('{user}', 'this is a message coming from the db', 0);"
