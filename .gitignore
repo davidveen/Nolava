@@ -104,3 +104,4 @@ ENV/
 !.vscode/extensions.json
 
 **/main_debug.py
+main.py
