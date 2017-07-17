@@ -153,13 +153,13 @@ def _check_mission_vote_complete(game_id: int):
     pass
 
 
-def _game_check(message: MessageType) -> Callable:
+def _game_check(recipient, message: MessageType) -> Callable:
     def _decorator(func: Callable) -> Callable:
         @wraps(func)
         def _wrapper(*args, **kwargs) -> Callable:
             is_ok = func(*args, **kwargs)
             if not is_ok:
-                post_message(message)
+                post_message(recipient, message)
             return is_ok
         return _wrapper
     return _decorator
