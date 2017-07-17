@@ -24,6 +24,12 @@ class SlackMessage(NamedTuple):
     timestamp: str
 
 
+class CommandData(NamedTuple):
+    source: str
+    user: SlackUser
+    payload: str
+
+
 # SlackUser = NamedTuple(
 #     "SlackUser",
 #     [("name", str), ("id", str)]
