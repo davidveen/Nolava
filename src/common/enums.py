@@ -1,5 +1,5 @@
 
-from enum import IntEnum
+from enum import IntEnum, auto
 
 
 class MessageType(IntEnum):
@@ -36,6 +36,8 @@ class MessageType(IntEnum):
     UNKNOWN_ERROR = 900
     GAME_LOAD_FAIL = 901
     GAME_START_FAIL = 902
+    ALREADY_JOINED = 903
+    ALREADY_LEFT = 904
 
     GAME_IN_PROGRESS = 910
     NOT_ENOUGH_PLAYERS = 911
@@ -87,3 +89,20 @@ class Role(IntEnum):
     OBERON = 5
     MORGANA = 6
     MINION = 7
+
+
+class CommandType(IntEnum):
+    START = auto()
+    ABORT = auto()
+
+    LEAVE = auto()
+    JOIN = auto()
+
+    VOTE_YES = auto()
+    VOTE_NO = auto()
+    VOTE_PASS = auto()
+    VOTE_FAIL = auto()
+
+    PROPOSE_TEAM = auto()
+    ASSASSINATE = auto()
+    HELP = auto()

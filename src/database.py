@@ -4,8 +4,8 @@ Everything to do with data
 
 
 import src.data_access as boomerdb
-
-from .common.enums import GameState
+import src.common.enums as enums
+import src.common.model as model
 
 
 def add_slack_user(slack_id: str, name: str, super_user: bool) -> None:
@@ -31,21 +31,29 @@ def player_leave(client_id: int, slack_id: str) -> None:
     raise NotImplementedError
 
 
-def get_game(client_id: str) -> GameState:
+def get_game(client_id: str) -> model.Game:
     """
-    Return current game state.
+    Return current game.
     """
     raise NotImplementedError
 
 
-def get_player_by_slack_id(slack_id: str) -> 
+def new_game(client_id: str) -> model.Game:
+    """
+    Create a new game.
+    """
+    raise NotImplementedError
 
 
-def toggle_player_availability(client_id: int, player_id: int) -> bool:
-    def get_player_availability() -> bool:
-        raise NotImplementedError
+def get_player_by_slack_id(slack_id: str) -> model.Player:
+    raise NotImplementedError
 
-    is_available = get_player_availability()
+
+def check_player_has_joined(client_id: int, slack_id: int) -> bool:
+    raise NotImplementedError
+
+
+def toggle_player_availability(client_id: int, slack_id: int) -> bool:
     raise NotImplementedError
 
 
@@ -53,7 +61,7 @@ def get_available_players(client_id: int):
     raise NotImplementedError
 
 
-def set_game_state(game_id: int, target_state: GameState):
+def set_game_state(game_id: int, target_state: enums.GameState):
     raise NotImplementedError
 
 

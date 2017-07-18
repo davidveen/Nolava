@@ -26,6 +26,7 @@ class SlackMessage(NamedTuple):
 
 
 class Command(NamedTuple):
+    command: enums.CommandType
     source: str
     user: SlackUser
     payload: str
