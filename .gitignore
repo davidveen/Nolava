@@ -104,6 +104,12 @@ ENV/
 !.vscode/extensions.json
 
 **/main_debug.py
+<<<<<<< HEAD
 config/db_debug.json
 **.bak
 
+=======
+**.bak
+main.py
+config/db_debug.json
+>>>>>>> jorard

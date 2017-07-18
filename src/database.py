@@ -2,25 +2,50 @@
 Everything to do with data
 """
 
-import datetime
-import json
-import pymysql
-import os
+
+import src.data_access as boomerdb
 
 from .common.enums import GameState
 
-_DB_JSON = ("config/db_debug.json", "config/db.json")
-CONFIG_FILE = _DB_JSON[0] if os.path.exists(_DB_JSON[0]) else _DB_JSON[1]
+
+def add_slack_user(slack_id: str, name: str, super_user: bool) -> None:
+    """
+    Add Slack user to the database.
+    """
+    sql = "INSERT INTO SlackUser (SlackID, Name, Participating) VALUES(?, ?, 1)"
+
+    boomerdb.query(sql, slack_id, )
 
 
-def toggle_player_availability(
-    client_id: int,
-    player_id: int,
-) -> bool:
-    def _get_player_availability() -> bool:
+def player_join(client_id: int, slack_id: str) -> None:
+    """
+    Player will be included the next time a new game is started.
+    """
+    raise NotImplementedError
+
+
+def player_leave(client_id: int, slack_id: str) -> None:
+    """
+    Player will not be included the next time a new game is started.
+    """
+    raise NotImplementedError
+
+
+def get_game(client_id: str) -> GameState:
+    """
+    Return current game state.
+    """
+    raise NotImplementedError
+
+
+def get_player_by_slack_id(slack_id: str) -> 
+
+
+def toggle_player_availability(client_id: int, player_id: int) -> bool:
+    def get_player_availability() -> bool:
         raise NotImplementedError
 
-    is_available = _get_player_availability()
+    is_available = get_player_availability()
     raise NotImplementedError
 
 
@@ -72,7 +97,7 @@ def get_game(client_id: int) -> bool:
 
 
 def get_next_message():
-    db = BaseAccessor()
+    raise NotImplementedError
 
 
 def mark_message_posted(message_id):

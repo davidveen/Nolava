@@ -25,6 +25,9 @@
     // PEP8 SETTINGS
     "python.linting.pep8Enabled": true,
     "python.linting.pep8Path": "${workspaceRoot}/env/scripts/pep8",
+    "python.linting.pep8Args": [
+        "--rcfile=${workspaceRoot}/.vscode/pylint.ini"
+    ],
 
     // TODO EXTENSION SETTINGS
     "todoIgnore": [

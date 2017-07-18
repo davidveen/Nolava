@@ -3,7 +3,8 @@ Nuhhhnuhnhnuhnuhnuhnuhnuuuhhhnuhhnuhhnuhhnuhh can't mute this!
 """
 
 
-from typing import List, NamedTuple
+from typing import List, NamedTuple, Optional
+import src.common.enums as enums
 
 
 class SlackUser(NamedTuple):
@@ -30,34 +31,23 @@ class Command(NamedTuple):
     payload: str
 
 
-class Player(NamedTuple):
-    id_: str
-    name: str
-    role: int
-    position: int
-
-
 class Game(NamedTuple):
-    id_: str
+    state: enums.GameState
     position: int
-    state: int
+    victor: Optional[str]
     mission: int
     proposal: int
 
-# SlackUser = NamedTuple(
-#     "SlackUser",
-#     [("name", str), ("id", str)]
-# )
+
+class Player(NamedTuple):
+    id_: int
+    slack_id: str
+    position: int
+    role: enums.Role
 
 
-# SlackChannel = NamedTuple(
-#     "SlackChannel",
-#     [("name", str), ("id", str), ("users", List[SlackUser])]
-# )
-
-
-# SlackMessage = NamedTuple(
-#     "SlackMessage",
-#     [("channel", SlackChannel), ("user", SlackUser),
-#      ("timestamp", str), ("text", str)]
-# )
+class Mission(NamedTuple):
+    number: int
+    status: enums.MissionStatus
+    proposal_count: int
+    success: bool
