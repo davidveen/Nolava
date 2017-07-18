@@ -7,6 +7,19 @@ import time
 
 import src.slack as slack
 
+from src.common.model import SlackChannel, SlackMessage, SlackUser
+
+
+def is_game_command(message: SlackMessage) -> bool:
+    """
+    Simple predicate to determine if message should be interpreted as a game
+    command.
+
+    A message is interpreted as a game command if the first character is an
+    exclamation mark ("!").
+    """
+    return message.text.startswith("!")
+
 
 def commence(debug: bool=False) -> None:
     """
@@ -16,16 +29,3 @@ def commence(debug: bool=False) -> None:
     now = datetime.datetime.now()
     timestamp = str(time.mktime(now.timetuple()))
     channel = slack.channel_by_name("nolava")
-
-    while True:
-        # check the main channel for messages
-        channel_messages = slack.chat_history(channel, timestamp=timestamp)
-
-        if not channel_messages:
-            continue
-
-        for message in channel_messages:
-            print(message.text)
-        
-        # set timestamp to timestamp of last message
-        timestamp = channel_messages[-1].timestamp
