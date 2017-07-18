@@ -76,8 +76,6 @@ class ProposalStatus(IntEnum):
     OPEN = 1
     CLOSED = 2
     ABORTED = 99
-<<<<<<< HEAD
-=======
 
 
 class Role(IntEnum):
@@ -89,4 +87,3 @@ class Role(IntEnum):
     OBERON = 5
     MORGANA = 6
     MINION = 7
->>>>>>> jorard
