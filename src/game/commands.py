@@ -1,8 +1,11 @@
 
+"""
+All player commands party here
+"""
+
 from typing import Callable
 from functools import wraps
 
-# import game_state as gs
 import src.database as db
 import src.message as message
 import src.common.enums as enums
@@ -23,7 +26,7 @@ def join(client_id: int, command: model.Command):
     # check if user already registered
     if _already_joined():
         return
-    
+
     # register player availability
     db.toggle_player_availability(client_id, command.user.id_)
     # send message
@@ -86,21 +89,28 @@ def new(client_id: int, game: model.Game):
     ):
         # TODO: create new game
         db.new_game(client_id)
-
         # change state to TEAM_PROPOSAL
-        gs.change_state(client_id, enums.GameState.TEAM_PROPOSAL)
+        return enums.GameState.TEAM_PROPOSAL
+    else:
+        return
 
-
-def abort(client_id: int):
+def abort(game: model.Game):
     """
     Set the active game state for client to GameState.ABORTED
     """
-    # TODO: some kind of check if abortion is allowed?
-    gs.change_state(client_id, enums.GameState.ABORTED)
+    # TODO: some kind of check if abortion is legal?
+    
+    @_game_check(enums.MessageType.NO_GAME_IN_PROGRESS)
+    def _game_in_progress():
+        return game
+
+    if not game:
+        return
+
+    return enums.GameState.ABORTED
 
 
 def propose_team(
-    client_id: int,
     game: model.Game,
     player: model.Player,
     command: model.Command
@@ -146,52 +156,75 @@ def propose_team(
 
     # TODO: update database
 
-    # change gamestate to TEAM_VOTE
-    gs.change_state(client_id, enums.GameState.TEAM_VOTE)
+    return enums.GameState.TEAM_VOTE
 
 
-def vote_team(client_id: int, command: model.Command):
+def vote_team(
+    game: model.Game,
+    command: model.Command):
     """
-    Vote yes/no on the current team proposal
+    Vote YES/NO on the current team proposal
     """
+
+    @_game_check(enums.MessageType.ALREADY_VOTED)
+    def _vote_desired(recipient=command.user.id_):
+        raise NotImplementedError
+
+    @_game_check(enums.MessageType.FUCKED_UP_VOTE)
+    def _vote_valid(recipient=command.user.id_):
+        raise NotImplementedError
+
+    def _all_votes_in(expected):
+        raise NotImplementedError
+
     # the game needs to be ready for team vote
     if not _game_is_ready(
-        client_id=client_id,
+        game=game,
         target_state=enums.GameState.TEAM_VOTE,
-        message=enums.MessageType.UNEXPECTED_VOTE
+        msg=enums.MessageType.UNEXPECTED_VOTE
     ):
         return
 
     # TODO: check if person already voted
-
+    if not _vote_desired():
+        return
     # TODO: check vote content
+    if not _vote_valid():
+        return
 
     # TODO: register vote
 
     # TODO: check if all votes are in
+    expected_votes = 5  # TODO: get expected num of votes
+    if not _all_votes_in(expected_votes):
+        return
 
-    gs.change_state(client_id, enums.GameState.TEAM_VOTE_COMPLETE)
+    return enums.GameState.TEAM_VOTE_COMPLETE
 
 
-def vote_mission(client_id: int, command: model.Command):
+def vote_mission(
+    game: model.Game,
+    command: model.Command):
     """
-    Vote success/fail on the current mission
+    Vote PASS/FAIL on the current mission
     """
     @_game_check(enums.MessageType.UNEXPECTED_VOTE)
     def _player_on_mission(recipient=command.user.id_):
         raise NotImplementedError
     
     @_game_check(enums.MessageType.FUCKED_UP_VOTE)
-    def _vote_correct(recipient=command.user.id_):
+    def _vote_valid(recipient=command.user.id_):
+        raise NotImplementedError
+
+
+    def _all_votes_in(expected):
         raise NotImplementedError
 
     # the game needs to be ready for mission vote
-    # vote is valid if the player is on the mission
-    # only baddies can vote fail
     if not _game_is_ready(
-        client_id=client_id,
+        game=game,
         target_state=enums.GameState.MISSION_VOTE,
-        message=enums.MessageType.UNEXPECTED_VOTE
+        msg=enums.MessageType.UNEXPECTED_VOTE
         # TODO: separate message for unexpected team vote?
     ):
         return
@@ -199,35 +232,81 @@ def vote_mission(client_id: int, command: model.Command):
     # TODO: check if player is on mission
     if not _player_on_mission():
         return
-
     # TODO: check vote content
-    if not _vote_correct():
+    # TODO: if vote is FAIL, check if player is a baddie
+    if not _vote_valid():
         return
 
-    # TODO: 
+    # TODO: register vote
+
+    # TODO: check if all votes are in
+    expected_votes = 5  # TODO: get expected number of votes
+    if not _all_votes_in(expected_votes):
+        return
+
+    return enums.GameState.MISSION_VOTE_COMPLETE
 
 
-def assassinate(client_id: int, command: model.Command):
+def assassinate(
+    game: model.Game,
+    player: model.Player,
+    command: model.Command
+):
     """
     Kill the target
     """
-    # the game needs to be ready for assassination
-    # the target must be a valid player
-    pass
+    @_game_check(enums.MessageType.FUCKED_UP_MURDER)
+    def _valid_target(recipient=command.user.id_):
+        return db.get_player_by_name(game.id_, command.payload)
 
+    @_game_check(enums.MessageType.UNEXPECTED_MURDER)
+    def _player_is_assassin(recipient=command.user.id_):
+        return player.role == enums.Role.ASSASSIN
+
+    @_game_check(enums.MessageType.ALREADY_MURDERED)
+    def _murder_desired(recipient=command.user.id_):
+        raise NotImplementedError
+
+    # the game needs to be ready for assassination
+    if not _game_is_ready(
+        game=game,
+        target_state=enums.GameState.ASSASSINATION,
+        msg=enums.MessageType.UNEXPECTED_MURDER
+    ):
+        return
+
+    # the murderer must be an assassin
+    if not _player_is_assassin():
+        return
+    # the assassin may only strike once
+    if not _murder_desired():
+        return
+    # the target must be an existing player
+    if not _valid_target():
+        return
+    
+    # TODO: register the kill
+    # NOTE: no field exists yet in boomerdb
+
+    return enums.GameState.CONCLUDED
+
+
+#########################
+### PRIVATE FUNCTIONS ###
+#########################
 
 def _game_check(msg: enums.MessageType) -> Callable:
     def _decorator(func: Callable) -> Callable:
         @wraps(func)
         def _wrapper(*args, recipient=None, **kwargs) -> Callable:
             # TODO: if recipient is empty, default to public channel
+            # TODO: somehow include content parameters in message
             is_ok = func(*args, **kwargs)
             if not is_ok:
                 message.post_message(recipient, msg)
             return is_ok
         return _wrapper
     return _decorator
-
 
 def _game_is_ready(
     game: model.Game,

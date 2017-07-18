@@ -33,6 +33,7 @@ class Command(NamedTuple):
 
 
 class Game(NamedTuple):
+    id_: int
     state: enums.GameState
     position: int
     victor: Optional[str]

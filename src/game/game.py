@@ -5,6 +5,7 @@ Monolith first. Services rofl.
 from functools import partial
 
 import commands as cmd
+import effects as efx
 import src.database as db
 import src.common.enums as enums
 import src.common.model as model
@@ -21,58 +22,40 @@ def receive_command(client_id, command: model.Command):
 
     # link each command to a function, with the required parameters
     ct = enums.CommandType
-    _command_map = {
+    command_map = {
         ct.JOIN: partial(cmd.join, client_id, command),
         ct.LEAVE: partial(cmd.leave, client_id, command),
         ct.START: partial(cmd.new, client_id, _game),
-        ct.ABORT: partial(cmd.abort, client_id),
+        ct.ABORT: partial(cmd.abort, _game),
         ct.PROPOSE_TEAM: partial(cmd.propose_team, _game, _player, command),
-        ct.VOTE_YES: partial(cmd.vote_team),
-        ct.VOTE_NO: partial(cmd.vote_team),
+        ct.VOTE_YES: partial(cmd.vote_team, _game, command),
+        ct.VOTE_NO: partial(cmd.vote_team, _game, command),
         ct.VOTE_PASS: partial(cmd.vote_mission),
         ct.VOTE_FAIL: partial(cmd.vote_mission),
-        ct.ASSASSINATE: partial(cmd.assassinate)
+        ct.ASSASSINATE: partial(cmd.assassinate, _game, _player, command)
     }
 
     # perform command
-    _command_map[command.command]()
+    new_state = command_map[command.command]()
+    # if there's a new state in town, down the rabbit hole go
+    if new_state:
+        _change_state(client_id, _game, command, new_state)
 
 
-def _assign_player_positions(game_id: int):
-    pass
+def _change_state(
+    client_id: int,
+    game: model.Game,
+    command: model.Command,
+    new_state: enums.GameState
+):
+    # write new state to db
+    db.set_game_state(game.id_, new_state)
 
+    # go through all corresponding change functions
+    state_change_map = {
+        enums.GameState.RECRUITING: 'bar',
+    }
 
-def _assign_player_roles(game_id: int):
-    pass
-
-
-def _check_game_state(game_id: int, target_state: enums.GameState) -> bool:
-    """
-    Check if current game state is target game state.
-    """
-    pass
-
-
-def _get_leader(game_id: int):
-    """
-    Retrieve current leader
-    """
-    pass
-
-
-def _next_leader(game_id: int):
-    """
-    Rotate leadership to next player position
-    """
-    pass
-
-
-def _check_team_vote_complete(game_id: int):
-    pass
-
-
-def _check_mission_vote_complete(game_id: int):
-    pass
-
-
-
+    # execute state functions
+    for action in state_change_map[new_state]:
+        action()
