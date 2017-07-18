@@ -93,7 +93,7 @@ def _get_players(game_id):
     raise NotImplementedError
 
 
-def _get_leader(game_id):
+def get_leader(game_id):
     # get active leader
     raise NotImplementedError
 

@@ -18,7 +18,7 @@ _STATE_DICT = {
 }
 
 
-def change_state(client_id, target_state, *args):
+def change_state(client_id: int, target_state: GameState, *args):
     #TODO: write new state to db
 
     # execute state functions

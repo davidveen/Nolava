@@ -8,12 +8,12 @@ from typing import List, NamedTuple
 
 class SlackUser(NamedTuple):
     name: str
-    id: str
+    id_: str
 
 
 class SlackChannel(NamedTuple):
     name: str
-    id: str
+    id_: str
     users: List[SlackUser]
 
 
@@ -24,11 +24,25 @@ class SlackMessage(NamedTuple):
     timestamp: str
 
 
-class CommandData(NamedTuple):
+class Command(NamedTuple):
     source: str
     user: SlackUser
     payload: str
 
+
+class Player(NamedTuple):
+    id_: str
+    name: str
+    role: int
+    position: int
+
+
+class Game(NamedTuple):
+    id_: str
+    position: int
+    state: int
+    mission: int
+    proposal: int
 
 # SlackUser = NamedTuple(
 #     "SlackUser",
