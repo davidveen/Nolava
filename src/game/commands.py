@@ -11,6 +11,7 @@ import src.message as message
 import src.common.enums as enums
 import src.common.model as model
 
+# TODO: move to settings?
 _MIN_PLAYERS = 5
 _MAX_PLAYERS = 10
 
@@ -255,9 +256,13 @@ def assassinate(
     """
     Kill the target
     """
-    @_game_check(enums.MessageType.FUCKED_UP_MURDER)
-    def _valid_target(recipient=command.user.id_):
-        return db.get_player_by_name(game.id_, command.payload)
+    def _valid_target():
+        return _game_check(
+            result=db.get_player_by_name(game.id_, command.payload),
+            msg=enums.MessageType.FUCKED_UP_MURDER,
+            recipient=command.user.id_
+        )
+        # return db.get_player_by_name(game.id_, command.payload)
 
     @_game_check(enums.MessageType.UNEXPECTED_MURDER)
     def _player_is_assassin(recipient=command.user.id_):
@@ -295,25 +300,18 @@ def assassinate(
 ### PRIVATE FUNCTIONS ###
 #########################
 
-def _game_check(msg: enums.MessageType) -> Callable:
-    def _decorator(func: Callable) -> Callable:
-        @wraps(func)
-        def _wrapper(*args, recipient=None, **kwargs) -> Callable:
-            # TODO: if recipient is empty, default to public channel
-            # TODO: somehow include content parameters in message
-            is_ok = func(*args, **kwargs)
-            if not is_ok:
-                message.post_message(recipient, msg)
-            return is_ok
-        return _wrapper
-    return _decorator
-
-def _game_is_ready(
-    game: model.Game,
-    target_state: enums.GameState,
-    msg: enums.MessageType
-) -> None:
-    @_game_check(msg)
-    def _check_game_state():
-        return game.state == target_state
-    return _check_game_state()
+def _game_check(
+    result: Any,
+    msg: enums.MessageType,
+    *contents,
+    recipient=None
+) -> Any:
+    try:
+        return func(*args)
+    except DatabaseException:
+        # TODO: public channel setting
+        admin = None
+        query = None
+        message.post_message(admin, enums.MessageType.DB_GO_BOOM, query)
+    except GameException:
+        message.post_message(recipient, msg, *contents)

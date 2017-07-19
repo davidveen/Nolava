@@ -38,6 +38,7 @@ class MessageType(IntEnum):
     GAME_START_FAIL = 902
     ALREADY_JOINED = 903
     ALREADY_LEFT = 904
+    DB_GO_BOOM = 905
 
     GAME_IN_PROGRESS = 910
     NO_GAME_IN_PROGRESS = 911        

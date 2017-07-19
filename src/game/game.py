@@ -11,7 +11,7 @@ import src.common.enums as enums
 import src.common.model as model
 
 
-def receive_command(client_id, command: model.Command):
+def give_command(client_id, command: model.Command):
     """
     Receive a command from deepthought
     """
