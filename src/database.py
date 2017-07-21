@@ -2,6 +2,7 @@
 Everything to do with data
 """
 
+from typing import List
 
 import src.data_access as boomerdb
 import src.common.enums as enums
@@ -98,12 +99,6 @@ def get_player_by_name(game_id: int, player_name: str):
     raise NotImplementedError
 
 
-def get_game(client_id: int) -> bool:
-    # get active game
-    # return False if no active game on client
-    raise NotImplementedError
-
-
 def get_next_message():
     raise NotImplementedError
 
@@ -122,7 +117,19 @@ def _get_proposal(mission_id):
     raise NotImplementedError
 
 
-def _get_players(game_id):
+def get_players(game_id) -> List[model.Player, ...]:
+    raise NotImplementedError
+
+
+def get_players_on_mission(game_id) -> List[model.Player, ...]:
+    raise NotImplementedError
+
+
+def get_mission_votes(game_id) -> List[model.Vote, ...]:
+    raise NotImplementedError
+
+
+def get_proposal_votes(game_id) -> List[model.Vote, ...]:
     raise NotImplementedError
 
 
