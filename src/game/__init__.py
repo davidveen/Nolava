@@ -1,2 +1,4 @@
 
-from .game import give_command
+# from .game import give_command
+# import commands
+# import effects

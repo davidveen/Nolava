@@ -1,0 +1,5 @@
+
+"""
+Retrieve game settings
+"""
+

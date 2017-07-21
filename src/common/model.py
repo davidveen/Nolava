@@ -53,3 +53,11 @@ class Mission(NamedTuple):
     status: enums.MissionStatus
     proposal_count: int
     success: bool
+
+
+class Vote(NamedTuple):
+    subject_id: int
+    player_id: int
+    vote: bool
+    msg: str
+
