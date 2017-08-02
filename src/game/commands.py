@@ -1,6 +1,6 @@
 
 """
-All player commands party here
+All commands party here
 """
 
 from typing import Callable, Any, Tuple
@@ -12,10 +12,9 @@ import src.database as db
 import src.message as message
 import src.common.enums as enums
 import src.common.model as model
+import src.settings
 
-# TODO: move to settings?
-_MIN_PLAYERS = 5
-_MAX_PLAYERS = 10
+# TODO: determine how to pass the public channel on to postmessage
 _PUBLIC_CHANNEL = 'bar'
 
 GameCheck = namedtuple_with_defaults(
@@ -102,10 +101,12 @@ def new(client_id: int, game: model.Game):
         return game is None
 
     def enough_players(num_players):
-        return num_players < _MIN_PLAYERS
+        with src.settings.get() as settings:
+            return num_players < settings.getint('GENERAL', 'minimum_players')
 
     def not_too_many_players(num_players):
-        return num_players > _MAX_PLAYERS
+        with src.settings.get() as settings:
+            return num_players > settings.getint('GENERAL', 'maximum_players')
 
     num_players_registered = len(db.get_available_players(client_id))
 
@@ -175,20 +176,21 @@ def propose_team(
     """
     Process a team proposal
     """
-    def proposed_by_leader():
-        """check if player is current leader"""
-        return game.position == player.position
+    # def proposed_by_leader():
+    #     """check if player is current leader"""
+    #     return game.position == player.position
 
-    def enough_players(expected):
-        return not len(command.payload.split(',')) < expected
+    # def enough_players(expected):
+    #     return not len(command.payload.split(',')) < expected
 
-    def too_many_players(expected):
-        return not len(command.payload.split(',')) > expected
+    # def too_many_players(expected):
+    #     return not len(command.payload.split(',')) > expected
 
     def known_players():
         """check if each player is a known player"""
         raise NotImplementedError
 
+    mission_number = 2
     expected_players = 5  # TODO: get expected number of players
 
     check_map = (
@@ -198,17 +200,17 @@ def propose_team(
             msg=enums.MessageType.UNEXPECTED_PROPOSAL
         ),
         GameCheck(
-            func=proposed_by_leader,
+            func=lambda: game.position == player.position,
             recipient=command.user.id_,
             msg=enums.MessageType.UNEXPECTED_PROPOSAL
         ),
         GameCheck(
-            func=partial(enough_players, expected_players),
+            func=lambda exp: not len(command.payload.split(',')) > exp,
             recipient=command.user.id_,
             msg=enums.MessageType.NOT_ENOUGH_PLAYERS_PROPOSAL
         ),
         GameCheck(
-            func=partial(too_many_players, expected_players),
+            func=lambda exp: not len(command.payload.split(',')) > exp,
             recipient=command.user.id_,
             msg=enums.MessageType.TOO_MANY_PLAYERS_PROPOSAL
         ),

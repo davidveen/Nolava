@@ -1,5 +1,8 @@
 """
-Monolith first. Services rofl.
+Embraces all commands as its own,
+but only gets to route them to their true home.
+At least when the commands grow up they come back here,
+and maybe cause some effects.
 """
 
 from functools import partial
