@@ -62,3 +62,6 @@ def _change_state(
     # execute state functions
     for action in state_change_map[new_state]:
         action()
+
+    if new_state:
+        _change_state(client_id, game, command, new_state)

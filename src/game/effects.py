@@ -6,6 +6,10 @@ import src.common.enums as enums
 import src.common.model as model
 
 
+def recruit
+
+
+
 # TEAM_PROPOSAL
 # check mission number
 # get required number of players

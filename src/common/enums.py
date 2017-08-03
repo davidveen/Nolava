@@ -41,7 +41,7 @@ class MessageType(IntEnum):
     DB_GO_BOOM = 905
 
     GAME_IN_PROGRESS = 910
-    NO_GAME_IN_PROGRESS = 911        
+    NO_GAME_IN_PROGRESS = 911
     NOT_ENOUGH_PLAYERS = 912
     TOO_MANY_PLAYERS = 913
 

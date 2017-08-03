@@ -39,6 +39,7 @@ class Game(NamedTuple):
     victor: Optional[str]
     mission: int
     proposal: int
+    num_players: int
 
 
 class Player(NamedTuple):

@@ -10,11 +10,11 @@ _SETTINGS_PATH = 'config/game.ini'
 
 
 @contextmanager
-def get():
+def read():
     parser = cp.ConfigParser()
     parser.read(_SETTINGS_PATH)
     try:
         yield parser
-    # TODO: error handling for non-existing settings?
+    # TODO: error handling for bad settings?
     finally:
         del parser

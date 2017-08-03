@@ -101,11 +101,11 @@ def new(client_id: int, game: model.Game):
         return game is None
 
     def enough_players(num_players):
-        with src.settings.get() as settings:
+        with src.settings.read() as settings:
             return num_players < settings.getint('GENERAL', 'minimum_players')
 
     def not_too_many_players(num_players):
-        with src.settings.get() as settings:
+        with src.settings.read() as settings:
             return num_players > settings.getint('GENERAL', 'maximum_players')
 
     num_players_registered = len(db.get_available_players(client_id))
@@ -137,7 +137,7 @@ def new(client_id: int, game: model.Game):
     # create new game
     db.new_game(client_id)
     # change state to TEAM_PROPOSAL
-    return enums.GameState.TEAM_PROPOSAL
+    return enums.GameState.RECRUITING
 
 
 def abort(game: model.Game):
@@ -176,22 +176,25 @@ def propose_team(
     """
     Process a team proposal
     """
-    # def proposed_by_leader():
-    #     """check if player is current leader"""
-    #     return game.position == player.position
+    def proposed_by_leader():
+        """check if player is current leader"""
+        return game.position == player.position
 
-    # def enough_players(expected):
-    #     return not len(command.payload.split(',')) < expected
+    def enough_players(expected):
+        return not len(command.payload.split(',')) < expected
 
-    # def too_many_players(expected):
-    #     return not len(command.payload.split(',')) > expected
+    def too_many_players(expected):
+        return not len(command.payload.split(',')) > expected
 
     def known_players():
         """check if each player is a known player"""
         raise NotImplementedError
 
-    mission_number = 2
-    expected_players = 5  # TODO: get expected number of players
+    with src.settings.read() as settings:
+        expected_players = settings.get(
+            'PLAYERS_REQUIRED',
+            str(game.num_players)
+        ).split(',')[game.mission - 1]
 
     check_map = (
         GameCheck(
@@ -205,12 +208,12 @@ def propose_team(
             msg=enums.MessageType.UNEXPECTED_PROPOSAL
         ),
         GameCheck(
-            func=lambda exp: not len(command.payload.split(',')) > exp,
+            func=partial(enough_players, expected_players),
             recipient=command.user.id_,
             msg=enums.MessageType.NOT_ENOUGH_PLAYERS_PROPOSAL
         ),
         GameCheck(
-            func=lambda exp: not len(command.payload.split(',')) > exp,
+            func=partial(too_many_players, expected_players),
             recipient=command.user.id_,
             msg=enums.MessageType.TOO_MANY_PLAYERS_PROPOSAL
         ),
@@ -249,10 +252,15 @@ def vote_team(
     """
     def not_already_voted():
         """check if player hasn't voted already"""
-        raise NotImplementedError
+        # list comprehension retrieves player vote if it exists
+        # cast to bool, reversed because we want an empty list to return True
+        return not bool(
+            [vote for vote in db.get_proposal_votes(game.id_)
+            if vote.player_id == player.id_]
+        )
 
-    def all_votes_in(expected):
-        raise NotImplementedError
+    def all_votes_in(num_votes):
+        return len(db.get_proposal_votes(game.id)) == num_votes
 
     check_map = (
         GameCheck(
@@ -284,9 +292,8 @@ def vote_team(
         message=command.payload
     )
 
-    # TODO: check if all votes are in
-    expected_votes = 5  # TODO: get expected num of votes
-    if not all_votes_in(expected_votes):
+    # check if all votes are in
+    if not all_votes_in(game.num_players):
         return
 
     return enums.GameState.TEAM_VOTE_COMPLETE
@@ -318,7 +325,7 @@ def vote_mission(
     def not_already_voted():
         """check if player hasn't voted already"""
         votes = db.get_mission_votes(game.id_)
-        
+
         for vote in votes:
             if vote.player_id == player.id_:
                 return
@@ -367,8 +374,13 @@ def vote_mission(
         vote=command.command == enums.CommandType.VOTE_PASS
     )
 
-    # TODO: check if all votes are in
-    expected_votes = 5  # TODO: get expected number of votes
+    # check if all votes are in
+    with src.settings.read() as settings:
+        expected_votes = settings.get(
+            'PLAYERS_REQUIRED',
+            str(game.num_players)
+        ).split(',')[game.mission - 1]
+
     if not all_votes_in(expected_votes):
         return
 
