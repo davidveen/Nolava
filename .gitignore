@@ -107,3 +107,6 @@ ENV/
 **.bak
 main.py
 config/db_debug.json
+
+# temp office files
+**/~$*
