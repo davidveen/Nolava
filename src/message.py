@@ -6,7 +6,7 @@ from typing import Any
 from .common.enums import MessageType
 
 
-def post_message(recipient: str, message: MessageType, *args):
+def post(recipient: str, message: MessageType, *args):
     """
     Add a message to the database for pickup by the front-end.
 
