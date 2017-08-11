@@ -46,6 +46,7 @@ class Game(NamedTuple):
 class Player(NamedTuple):
     id_: int
     slack_id: str
+    name: str
     position: int
     role: enums.Role
 

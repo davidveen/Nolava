@@ -54,7 +54,15 @@ def get_slackuser(slack_id: str) -> model.SlackUser:
     raise NotImplementedError
 
 
+def get_player_by_position(position: int) -> model.Player:
+    raise NotImplementedError
+
+
 def get_player_by_slack_id(slack_id: str) -> model.Player:
+    raise NotImplementedError
+
+
+def get_players_in_order(starting_position: int=1) -> List[model.Player]:
     raise NotImplementedError
 
 

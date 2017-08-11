@@ -1,7 +1,7 @@
 
 import random
 import src.message as message
-
+import src.settings
 import src.common.enums as enums
 import src.common.model as model
 import src.database as db
@@ -62,10 +62,44 @@ def recruit(game: model.Game):
 
 
 def team_proposal(game: model.Game):
-    # get required number of players
+    """
+    Game is in team_proposal status
+    send the following notifications:
+    PUBLIC
+        - PROPOSAL_NEXT
+    PRIVATE
+        - PROPOSAL_PRIVATE_ALERT
+    """
+    # get the required number of players
+    with src.settings.read() as settings:
+        num_required = settings.get(
+            'PLAYERS_REQUIRED',
+            str(game.num_players)
+        ).split(',')[game.mission - 1]
+
     # get the current leader
-    # post some messages
-    raise NotImplementedError
+    leader = db.get_player_by_position(game.position)
+
+    # notify the world
+    message.post(
+        _PUBLIC_CHANNEL,
+        enums.MessageType.PROPOSAL_NEXT,  # TODO: is this the right msg?
+        leader.name,
+        ', '.join([p.name for p in db.get_players_in_order(game.position)]),
+        game.mission,
+        game.proposal,
+        num_required
+    )
+
+    # instruct the leader
+    message.post(
+        leader.id_,
+        enums.MessageType.PROPOSAL_PRIVATE_ALERT,
+        game.mission,
+        game.proposal,
+        num_required
+    )
+
 
 def team_vote(game: model.Game):
     """
