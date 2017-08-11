@@ -48,9 +48,9 @@ def join(client_id: int, command: model.Command):
             return
 
     # register player availability
-    db.toggle_player_availability(client_id, command.user.id_)
+    db.user_join(client_id, command.user.id_)
     # send message
-    message.post_message(command.user.id_, enums.MessageType.PLAYER_JOIN)
+    message.post(command.user.id_, enums.MessageType.PLAYER_JOIN)
 
 
 def leave(client_id: int, command: model.Command):
@@ -77,9 +77,9 @@ def leave(client_id: int, command: model.Command):
             return
 
     # register player availability
-    db.toggle_player_availability(client_id, command.user.id_)
+    db.user_leave(client_id, command.user.id_)
     # send message
-    message.post_message(command.user.id_, enums.MessageType.PLAYER_LEAVE)
+    message.post(command.user.id_, enums.MessageType.PLAYER_LEAVE)
 
 
 def new(client_id: int, game: model.Game):
@@ -108,7 +108,7 @@ def new(client_id: int, game: model.Game):
         with src.settings.read() as settings:
             return num_players > settings.getint('GENERAL', 'maximum_players')
 
-    num_players_registered = len(db.get_available_players(client_id))
+    num_players_registered = len(db.get_available_users(client_id))
 
     check_map = (
         GameCheck(
@@ -465,6 +465,6 @@ def _game_check(
         # TODO: public channel setting
         admin = None
         query = None
-        message.post_message(admin, enums.MessageType.DB_GO_BOOM, query)
+        message.post(admin, enums.MessageType.DB_GO_BOOM, query)
     except exceptions.GameException:
-        message.post_message(recipient, msg, *contents)
+        message.post(recipient, msg, *contents)

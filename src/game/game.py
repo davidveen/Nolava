@@ -9,22 +9,45 @@ from functools import partial
 
 import commands as cmd
 import effects as efx
+import src.exceptions as exceptions
 import src.database as db
 import src.common.enums as enums
 import src.common.model as model
 
 
-def give_command(client_id, command: model.Command):
+def issue_command(client_id, command: model.Command):
     """
     Receive a command from deepthought
     """
-    # get game and player models from database
-    # based on client id and slack user id
-    game = db.get_game(client_id)
-    player = db.get_player_by_slack_id(command.user.id_)
+    ct = enums.CommandType
+    
+    # get game from database
+    try:
+        game = db.get_game(client_id)
+    except exceptions.GameException:
+        # don't allow anything but START, JOIN, LEAVE commands if no game active
+        if command.command not in (ct.JOIN, ct.LEAVE, ct.START):
+            # TODO: post message in channel?
+            return
+        else:
+            pass
+
+    # make sure the issuer is a registered slack user
+    try:
+        db.get_slackuser(command.user.id_)
+    except exceptions.DataAccessException:
+        # register the unknown user
+        db.add_slack_user(command.user.id_, command.user.name)
+
+    # get player from database, if there is a game
+    try:
+        player = db.get_player_by_slack_id(command.user.id_)
+    except exceptions.DataAccessException:
+        # unknown player issued command
+        # TODO: determine behaviour
+        return
 
     # link each command to a function, with the required parameters
-    ct = enums.CommandType
     command_map = {
         ct.JOIN: partial(cmd.join, client_id, command),
         ct.LEAVE: partial(cmd.leave, client_id, command),
@@ -40,7 +63,17 @@ def give_command(client_id, command: model.Command):
 
     # perform command
     new_state = command_map[command.command]()
-    # if there's a new state in town, down the rabbit hole go
+
+    # the START command is exceptional, in that there was no game before
+    # but there is one now
+    if command.command == ct.START:
+        game = db.get_game(client_id)
+    # in all other cases if there is no game, we're doomed
+    elif game is None:
+        # TODO: determine behaviour
+        pass
+
+    # if command returned a new_state, down the rabbit hole go we must
     if new_state:
         _change_state(client_id, game, command, new_state)
 
@@ -54,14 +87,15 @@ def _change_state(
     # write new state to db
     db.set_game_state(game.id_, new_state)
 
+    gs = enums.GameState
     # go through all corresponding change functions
     state_change_map = {
-        enums.GameState.RECRUITING: 'bar',
+        gs.RECRUITING: efx.recruit,
+        gs.TEAM_PROPOSAL: efx.team_proposal
     }
 
-    # execute state functions
-    for action in state_change_map[new_state]:
-        action()
+    # execute new state function
+    newer_state = state_change_map[new_state](game)
 
-    if new_state:
+    if newer_state:
         _change_state(client_id, game, command, new_state)

@@ -9,7 +9,7 @@ import src.common.enums as enums
 import src.common.model as model
 
 
-def add_slack_user(slack_id: str, name: str, super_user: bool) -> None:
+def add_slack_user(slack_id: str, name: str, super_user: bool=False) -> None:
     """
     Add Slack user to the database.
     """
@@ -18,16 +18,16 @@ def add_slack_user(slack_id: str, name: str, super_user: bool) -> None:
     boomerdb.query(sql, slack_id, )
 
 
-def player_join(client_id: int, slack_id: str) -> None:
+def user_join(client_id: int, slack_id: str) -> None:
     """
-    Player will be included the next time a new game is started.
+    User will be included as player the next time a new game is started.
     """
     raise NotImplementedError
 
 
-def player_leave(client_id: int, slack_id: str) -> None:
+def user_leave(client_id: int, slack_id: str) -> None:
     """
-    Player will not be included the next time a new game is started.
+    User will not be included as player the next time a new game is started.
     """
     raise NotImplementedError
 
@@ -42,7 +42,15 @@ def get_game(client_id: str) -> model.Game:
 def new_game(client_id: str) -> model.Game:
     """
     Create a new game.
+    # mission counter should be 1
+    # (automatically create first mission with proposal count 0, status PROPOSING)
+    # position should be 1
+    # game state should be empty
     """
+    raise NotImplementedError
+
+
+def get_slackuser(slack_id: str) -> model.SlackUser:
     raise NotImplementedError
 
 
@@ -50,15 +58,15 @@ def get_player_by_slack_id(slack_id: str) -> model.Player:
     raise NotImplementedError
 
 
-def check_player_has_joined(client_id: int, slack_id: int) -> bool:
+def check_player_has_joined(client_id: int, slack_id: str) -> bool:
     raise NotImplementedError
 
 
-def toggle_player_availability(client_id: int, slack_id: int) -> bool:
+def get_available_users(client_id: int) -> List[model.SlackUser]:
     raise NotImplementedError
 
 
-def get_available_players(client_id: int):
+def register_player(game_id: int, slack_id: str, role: int, position: int):
     raise NotImplementedError
 
 

@@ -88,7 +88,7 @@ class ProposalStatus(IntEnum):
 class Role(IntEnum):
     MERLIN = 0
     PERCIVAL = 1
-    LOYAL_SERVANT = 2
+    SERVANT = 2
     MORDRED = 3
     ASSASSIN = 4
     OBERON = 5
