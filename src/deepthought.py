@@ -29,3 +29,10 @@ def commence(debug: bool=False) -> None:
     now = datetime.datetime.now()
     timestamp = str(time.mktime(now.timetuple()))
     channel = slack.channel_by_name("nolava")
+
+    slack.chat_history(channel)
+
+    slack.post_message(
+        channel.id_,
+        "Sup homies."
+    )

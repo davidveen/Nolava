@@ -4,11 +4,19 @@ Compact Slack API client.
 
 
 import json
-from typing import List, NamedTuple
+
+from typing import (
+    List,
+    Union
+)
 
 import slacker
 
-from .common.model import SlackChannel, SlackMessage, SlackUser
+from .common.model import (
+    SlackChannel,
+    SlackMessage,
+    SlackUser
+)
 
 
 with open("config/slackbot.json", "r") as config:
@@ -34,7 +42,7 @@ def delete_message(message: SlackMessage) -> None:
 
 
 def chat_history(
-    channel: SlackChannel,
+    channel: Union[SlackChannel, SlackUser],
     private: bool=False,
     timestamp: float=None
 ) -> List[SlackMessage]:
@@ -44,8 +52,15 @@ def chat_history(
     Optionally include timestamp from which time on messages will be
     retrieved.
     """
-    get_history = _SLACK.im.history if private else _SLACK.channels.history
-    history = get_history(channel.id, oldest=timestamp).body["messages"]
+    if private:
+        private_channels = _SLACK.im.list().body
+        channel_id, *_ = [
+            c["id"] for c in private_channels
+            if c["user"] == channel.id_
+        ]
+        history = _SLACK.im.history(channel_id, oldest=timestamp)
+    else:
+        history = _SLACK.channels.history(channel.id_, oldest=timestamp)
 
     return [
         SlackMessage(
@@ -66,7 +81,7 @@ def user_by_id(user_id: str) -> SlackUser:
     user = _SLACK.users.info(user_id).body["user"]
 
     return SlackUser(
-        id=user["id"],
+        id_=user["id"],
         name=user["name"]
     )
 
@@ -84,7 +99,7 @@ def user_by_name(user_name: str) -> SlackUser:
         ]
 
         return SlackUser(
-            id=user["id"],
+            id_=user["id"],
             name=user["name"]
         )
 
@@ -105,7 +120,7 @@ def channel_by_name(name: str) -> SlackChannel:
         ]
 
         return SlackChannel(
-            id=channel["id"],
+            id_=channel["id"],
             name=channel["name"],
             users=[user_by_id(slack_id) for slack_id in channel["members"]]
         )
