@@ -3,9 +3,26 @@ Everything to do with data
 """
 
 
-import src.data_access as boomerdb
+import datetime
+import json
+import os
+
+from typing import (
+    Any,
+    Dict,
+    List,
+    Tuple,
+    Union
+)
+
+import pymysql
+
 import src.common.enums as enums
 import src.common.model as model
+
+
+_DB_JSON = ("config/db_debug.json", "config/db.json")
+CONFIG_FILE = _DB_JSON[0] if os.path.exists(_DB_JSON[0]) else _DB_JSON[1]
 
 
 def add_slack_user(slack_id: str, name: str, super_user: bool) -> None:
@@ -14,7 +31,7 @@ def add_slack_user(slack_id: str, name: str, super_user: bool) -> None:
     """
     sql = "INSERT INTO SlackUser (SlackID, Name, Participating) VALUES(?, ?, 1)"
 
-    boomerdb.query(sql, slack_id, )
+    _query(sql, slack_id, )
 
 
 def player_join(client_id: int, slack_id: str) -> None:
@@ -31,7 +48,7 @@ def player_leave(client_id: int, slack_id: str) -> None:
     raise NotImplementedError
 
 
-def get_game(client_id: str) -> model.Game:
+def get_game(client_id: int) -> model.Game:
     """
     Return current game.
     """
@@ -98,39 +115,52 @@ def get_player_by_name(game_id: int, player_name: str):
     raise NotImplementedError
 
 
-def get_game(client_id: int) -> bool:
-    # get active game
-    # return False if no active game on client
-    raise NotImplementedError
-
-
 def get_next_message():
     raise NotImplementedError
 
 
 def mark_message_posted(message_id):
-    pass
-
-
-def _get_mission(game_id):
-    # get active mission
     raise NotImplementedError
 
 
-def _get_proposal(mission_id):
-    # get active proposal
-    raise NotImplementedError
+def _settings() -> Dict[str, str]:
+    with open(CONFIG_FILE) as config:
+        return json.load(config)
 
 
-def _get_players(game_id):
-    raise NotImplementedError
+def _query(
+    query: str,
+    *args: Tuple[Union[int, float, bool, str]]
+) -> List[Dict[str, Union[int, float, bool, str]]]:
+    with _get_cursor() as cursor:
+        arguments = _stringify(args)
+        cursor.execute(query, arguments)
+
+        return cursor.fetchall()
 
 
-def get_leader(game_id):
-    # get active leader
-    raise NotImplementedError
+def _stringify(args):
+    arguments = []
+
+    for arg in args:
+        if not arg:
+            continue
+        if isinstance(arg, datetime.datetime):
+            arguments.append(arg.strftime('%Y-%m-%d %H:%M:%S'))
+        else:
+            arguments.append(str(arg))
+
+    return tuple(arguments)
 
 
-def _get_assassin(game_id):
-    # get assassin player id
-    raise NotImplementedError
+def _get_cursor():
+    connection = pymysql.connect(
+        host=_settings().get("host", None),
+        port=_settings().get("port", None),
+        user=_settings().get("user", None),
+        passwd=_settings().get("password", None),
+        db=_settings().get("database", None),
+        autocommit=True
+    )
+
+    return connection.cursor(pymysql.cursors.DictCursor)
